@@ -95,7 +95,7 @@ public class Main {
         //        main.test_trade_query();
 
         // 测试当面付2.0退货
-        //        main.test_trade_refund();
+         //       main.test_trade_refund();
 
         // 测试当面付2.0生成支付二维码
         main.test_trade_precreate();
@@ -286,7 +286,7 @@ public class Main {
     // 测试当面付2.0查询订单
     public void test_trade_query() {
         // (必填) 商户订单号，通过此商户订单号查询当面付的交易状态
-        String outTradeNo = "tradepay14817938139942440181";
+        String outTradeNo = "tradeprecreate15392501349008776924";
 
         // 创建查询请求builder，设置请求参数
         AlipayTradeQueryRequestBuilder builder = new AlipayTradeQueryRequestBuilder()
@@ -325,7 +325,7 @@ public class Main {
     // 测试当面付2.0退款
     public void test_trade_refund() {
         // (必填) 外部订单号，需要退款交易的商户外部订单号
-        String outTradeNo = "tradepay14817938139942440181";
+        String outTradeNo = "tradeprecreate15392501349008776924";
 
         // (必填) 退款金额，该金额必须小于等于订单的支付金额，单位为元
         String refundAmount = "0.01";
@@ -377,11 +377,13 @@ public class Main {
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
         // 如果同时传入了【打折金额】,【不可打折金额】,【订单总金额】三者,则必须满足如下条件:【订单总金额】=【打折金额】+【不可打折金额】
-        String totalAmount = "0.01";
+        String totalAmount = "0.33";
+
+        String discounttableAmount = "0.31";
 
         // (可选) 订单不可打折金额，可以配合商家平台配置折扣活动，如果酒水不参与打折，则将对应金额填写至此字段
         // 如果该值未传入,但传入了【订单总金额】,【打折金额】,则该值默认为【订单总金额】-【打折金额】
-        String undiscountableAmount = "0";
+        String undiscountableAmount = "0.02";
 
         // 卖家支付宝账号ID，用于支持一个签约账号下支持打款到不同的收款账号，(打款到sellerId对应的支付宝账号)
         // 如果该字段为空，则默认为与支付宝签约的商户的PID，也就是appid对应的PID
@@ -421,7 +423,7 @@ public class Main {
             .setOperatorId(operatorId).setStoreId(storeId).setExtendParams(extendParams)
             .setTimeoutExpress(timeoutExpress)
             //                .setNotifyUrl("http://www.test-notify-url.com")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
-            .setGoodsDetailList(goodsDetailList);
+            .setGoodsDetailList(goodsDetailList).setDiscountableAmount(discounttableAmount);
 
         AlipayF2FPrecreateResult result = tradeService.tradePrecreate(builder);
         switch (result.getTradeStatus()) {
